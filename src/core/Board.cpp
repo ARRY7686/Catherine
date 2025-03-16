@@ -15,7 +15,10 @@ enum{
     a2,b2,c2,d2,e2,f2,g2,h2,
     a1,b1,c1,d1,e1,f1,g1,h1
 };
-
+//sides to play
+enum{
+    WHITE,BLACK
+};
 // defining set/get/pop macros
 #define getBit(bitBoard,square) (bitBoard & (1ULL << square))
 #define setBit(bitBoard,square) (bitBoard |= (1ULL << square))
@@ -43,15 +46,42 @@ void printBitBoard(U64 bitBoard){
 
 }
 
+//not A file
+U64 notAFile = 18374403900871474942ULL;
+//not H file
+U64 notHFile = 9187201950435737471ULL;
+// not HG file
+U64 notHGFile = 4557430888798830399ULL;
+//not AB file
+U64 notABFile = 18229723555195321596ULL;
+//Attacks
+    //Pawn attacks
+    U64 pawnAttacks[2][64];
+    //generating pawn attacks by masking the pawn position
+    U64 maskPawnAttacks(int square,int side){
+        U64 bitBoard = 0ULL;
+        U64 Attacks = 0ULL;
+        setBit(bitBoard,square);
+        if(side == WHITE){
+            if((bitBoard>>7) & notAFile){
+                Attacks |= (bitBoard >> 7);
+            }
+            if((bitBoard >> 9) & notHFile){
+                Attacks |= (bitBoard >> 9);
+            }
+        }else{
+            if((bitBoard << 7) & notHFile){
+                Attacks |= (bitBoard << 7);
+            }
+            if((bitBoard << 9) & notAFile){
+                Attacks |= (bitBoard << 9);
+            }
+        }
+        return Attacks;
+    }
 
 //Main driver function
 int main(){
-    //defining bitboard
-    U64 bitBoard = 0ULL;
-    //using the macros manipulating it and printing it
-    setBit(bitBoard,e2);
-    setBit(bitBoard,e4);
-    popBit(bitBoard,e2);
-    printBitBoard(bitBoard);
+    printBitBoard(maskPawnAttacks(h4,WHITE));
     return 0;
 }

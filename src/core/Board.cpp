@@ -59,6 +59,8 @@ U64 notABFile = 18229723555195321596ULL;
     U64 pawnAttacks[2][64];
     //Knight attacks
     U64 knightAttacks[64]; 
+    //king attacks
+    U64 kingAttacks[64];
     //generating pawn attacks by masking the pawn position
     U64 maskPawnAttacks(int square,int side){
         U64 bitBoard = 0ULL;
@@ -113,9 +115,40 @@ U64 notABFile = 18229723555195321596ULL;
         return attacks;
 
     }
+    //generating king attacks by masking the king position
+    U64 maskKingAttacks(int square){
+        U64 attacks = 0ULL;
+        U64 bitBoard = 0ULL;
+        setBit(bitBoard,square);
+        if((bitBoard >> 1) & notHFile){
+            attacks |= (bitBoard >> 1);
+        }
+        if((bitBoard >> 9) & notHFile){
+            attacks |= (bitBoard >> 9);
+        }
+        if((bitBoard >> 8)){
+            attacks |= (bitBoard >> 8);
+        }
+        if((bitBoard >> 7) & notAFile){
+            attacks |= (bitBoard >> 7);
+        }
+        if((bitBoard << 1) & notAFile){
+            attacks |= (bitBoard << 1);
+        }
+        if((bitBoard << 9) & notAFile){
+            attacks |= (bitBoard << 9);
+        }
+        if((bitBoard << 8)){
+            attacks |= (bitBoard << 8);
+        }
+        if((bitBoard << 7) & notHFile){
+            attacks |= (bitBoard << 7);
+        }
+        return attacks;
+    }
 
 //Main driver function
 int main(){
-    printBitBoard(maskKnightAttacks(h4));
+    printBitBoard(maskKingAttacks(h4));
     return 0;
 }

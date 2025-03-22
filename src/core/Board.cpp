@@ -185,8 +185,12 @@ U64 notABFile = 18229723555195321596ULL;
         }
         return attacks;
     }
+    //using the upper two functions to generate queen attacks
+    U64 maskQueenAttacks(int square){
+        return maskBishopAttacks(square) | maskRookAttacks(square);
+    }
 //Main driver function
 int main(){
-    printBitBoard(maskRookAttacks(d5));
+    printBitBoard(maskQueenAttacks(d5));
     return 0;
 }

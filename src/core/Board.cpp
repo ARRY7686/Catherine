@@ -146,9 +146,28 @@ U64 notABFile = 18229723555195321596ULL;
         }
         return attacks;
     }
+    U64 maskBishopAttacks(int square){
+        U64 attacks = 0ULL;
 
+        int ranks,files;
+        int tragetRank = square/8;
+        int tragetFile = square%8;
+        for(ranks = tragetRank+1,files = tragetFile+1;ranks<=7 && files<=7;ranks++,files++){
+            attacks |= (1ULL << (ranks*8+files));
+        }
+        for(ranks = tragetRank-1,files = tragetFile-1;ranks>=0 && files>=0;ranks--,files--){
+            attacks |= (1ULL << (ranks*8+files));
+        }
+        for(ranks = tragetRank+1,files = tragetFile-1;ranks<=7 && files>=0;ranks++,files--){
+            attacks |= (1ULL << (ranks*8+files));
+        }
+        for(ranks = tragetRank-1,files = tragetFile+1;ranks>=0 && files<=7;ranks--,files++){
+            attacks |= (1ULL << (ranks*8+files));
+        }
+        return attacks;
+    }
 //Main driver function
 int main(){
-    printBitBoard(maskKingAttacks(h4));
+    printBitBoard(maskBishopAttacks(a1));
     return 0;
 }

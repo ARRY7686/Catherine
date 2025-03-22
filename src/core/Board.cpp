@@ -189,8 +189,69 @@ U64 notABFile = 18229723555195321596ULL;
     U64 maskQueenAttacks(int square){
         return maskBishopAttacks(square) | maskRookAttacks(square);
     }
+
+    //generate bishop on fly
+    U64 BishopAttacksOnTheFly(int square, U64 block) {
+        U64 attacks = 0ULL;
+        int rank, file;
+        int targetRank = square / 8;
+        int targetFile = square % 8;
+    
+        for (rank = targetRank + 1, file = targetFile + 1; rank <= 7 && file <= 7; rank++, file++) {
+            attacks |= (1ULL << (rank * 8 + file));
+            if (block & (1ULL << (rank * 8 + file))) break;  // Stop at blocker
+        }
+    
+        for (rank = targetRank - 1, file = targetFile - 1; rank >= 0 && file >= 0; rank--, file--) {
+            attacks |= (1ULL << (rank * 8 + file));
+            if (block & (1ULL << (rank * 8 + file))) break;  // Stop at blocker
+        }
+    
+        for (rank = targetRank + 1, file = targetFile - 1; rank <= 7 && file >= 0; rank++, file--) {
+            attacks |= (1ULL << (rank * 8 + file));
+            if (block & (1ULL << (rank * 8 + file))) break;  // Stop at blocker
+        }
+    
+        for (rank = targetRank - 1, file = targetFile + 1; rank >= 0 && file <= 7; rank--, file++) {
+            attacks |= (1ULL << (rank * 8 + file));
+            if (block & (1ULL << (rank * 8 + file))) break;  // Stop at blocker
+        }
+    
+        return attacks;
+    }
+    //generate rook on fly
+    U64 RookAttacksOnTheFly(int square, U64 block) {
+        U64 attacks = 0ULL;
+        int ranks,files;
+        int tragetRank = square/8;
+        int tragetFile = square%8;
+        for(ranks = tragetRank+1;ranks<=7;ranks++){
+            attacks |= (1ULL << (ranks*8+tragetFile));
+            if (block & (1ULL << (ranks*8+tragetFile))) break;
+
+        }
+        for(ranks = tragetRank-1;ranks>=0;ranks--){
+            attacks |= (1ULL << (ranks*8+tragetFile));
+            if (block & (1ULL << (ranks*8+tragetFile))) break;
+        }
+        for(files = tragetFile+1;files<=7;files++){
+            attacks |= (1ULL << (tragetRank*8+files));
+            if (block & (1ULL << (tragetRank*8+files))) break;
+        }
+        for(files = tragetFile-1;files>=0;files--){
+            attacks |= (1ULL << (tragetRank*8+files));
+            if (block & (1ULL << (tragetRank*8+files))) break;
+        }
+        return attacks;
+    }
 //Main driver function
 int main(){
     printBitBoard(maskQueenAttacks(d5));
+    U64 block = 0ULL;
+    setBit(block, d4);
+    setBit(block, e5);
+    setBit(block, g2);
+    printBitBoard(BishopAttacksOnTheFly(d5, block));
+    printBitBoard(RookAttacksOnTheFly(d5, block));
     return 0;
 }

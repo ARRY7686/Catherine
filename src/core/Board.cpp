@@ -4,7 +4,7 @@
 //defining bitboard types
 #define U64 unsigned long long
 
-//board squares
+//board squares using enums for better accessibility and readability
 enum{
     a8,b8,c8,d8,e8,f8,g8,h8,
     a7,b7,c7,d7,e7,f7,g7,h7,
@@ -15,11 +15,11 @@ enum{
     a2,b2,c2,d2,e2,f2,g2,h2,
     a1,b1,c1,d1,e1,f1,g1,h1
 };
-//sides to play
+//sides to play(black and white to differentiate between pieces)
 enum{
     WHITE,BLACK
 };
-// defining set/get/pop macros
+// defining set/get/pop macros (bitboard operations using bit manipulation)
 #define getBit(bitBoard,square) (bitBoard & (1ULL << square))
 #define setBit(bitBoard,square) (bitBoard |= (1ULL << square))
 #define popBit(bitBoard,square) (getBit(bitBoard,square)? bitBoard ^= (1ULL << square) : 0)
@@ -46,13 +46,13 @@ void printBitBoard(U64 bitBoard){
 
 }
 
-//not A file
+//not A  file so that we should not go out of the board while generating mask attacks
 U64 notAFile = 18374403900871474942ULL;
-//not H file
+//not H  file so that we should not go out of the board while generating mask attacks
 U64 notHFile = 9187201950435737471ULL;
-// not HG file
+// not HG  file so that we should not go out of the board while generating mask attacks
 U64 notHGFile = 4557430888798830399ULL;
-//not AB file
+//not AB  file so that we should not go out of the board while generating mask attacks
 U64 notABFile = 18229723555195321596ULL;
 //Attacks
     //Pawn attacks
@@ -61,7 +61,14 @@ U64 notABFile = 18229723555195321596ULL;
     U64 knightAttacks[64]; 
     //king attacks
     U64 kingAttacks[64];
-    //generating pawn attacks by masking the pawn position
+    //bishop attacks
+    U64 bishopAttacks[64];
+    //rook attacks
+    U64 rookAttacks[64];
+    //queen attacks
+    U64 queenAttacks[64];
+    //masking the attacks(pedicting all the possible attacks from that position)
+    //generating pawn attacks by masking the pawn position(iterating over the board and setting the bit to 1 where the pawn can attack)
     U64 maskPawnAttacks(int square,int side){
         U64 bitBoard = 0ULL;
         U64 Attacks = 0ULL;
@@ -83,7 +90,7 @@ U64 notABFile = 18229723555195321596ULL;
         }
         return Attacks;
     }
-    //generating knight attacks by masking the knight position
+    //generating knight attacks by masking the knight position (iterating over the board and setting the bit to 1 where the knight can attack)
     U64 maskKnightAttacks(int square){
         U64 attacks = 0ULL;
         U64 bitBoard = 0ULL;
@@ -115,7 +122,7 @@ U64 notABFile = 18229723555195321596ULL;
         return attacks;
 
     }
-    //generating king attacks by masking the king position
+    //generating king attacks by masking the king position (iterating over the board and setting the bit to 1 where the king can attack)
     U64 maskKingAttacks(int square){
         U64 attacks = 0ULL;
         U64 bitBoard = 0ULL;
@@ -146,6 +153,7 @@ U64 notABFile = 18229723555195321596ULL;
         }
         return attacks;
     }
+    //generating bishop attacks by masking the bishop position (iterating over the board and setting the bit to 1 where the bishop can attack)
     U64 maskBishopAttacks(int square){
         U64 attacks = 0ULL;
 
@@ -166,6 +174,7 @@ U64 notABFile = 18229723555195321596ULL;
         }
         return attacks;
     }
+    //generating rook attacks by masking the rook position (iterating over the board and setting the bit to 1 where the rook can attack)
     U64 maskRookAttacks(int square){
         U64 attacks = 0ULL;
         int ranks,files;
@@ -190,7 +199,7 @@ U64 notABFile = 18229723555195321596ULL;
         return maskBishopAttacks(square) | maskRookAttacks(square);
     }
 
-    //generate bishop on fly
+    //generate bishop on fly(limiting the bishop attacks to the blockers(other pieces if present on the board))
     U64 BishopAttacksOnTheFly(int square, U64 block) {
         U64 attacks = 0ULL;
         int rank, file;
@@ -219,7 +228,7 @@ U64 notABFile = 18229723555195321596ULL;
     
         return attacks;
     }
-    //generate rook on fly
+    //generate rook on fly(limiting the rook attacks to the blockers(other pieces if present on the board))
     U64 RookAttacksOnTheFly(int square, U64 block) {
         U64 attacks = 0ULL;
         int ranks,files;
@@ -246,6 +255,7 @@ U64 notABFile = 18229723555195321596ULL;
     }
 //Main driver function
 int main(){
+    //testing the bitboard
     printBitBoard(maskQueenAttacks(d5));
     U64 block = 0ULL;
     setBit(block, d4);

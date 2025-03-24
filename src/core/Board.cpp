@@ -236,22 +236,25 @@ U64 notABFile = 18229723555195321596ULL;
         int tragetFile = square%8;
         for(ranks = tragetRank+1;ranks<=7;ranks++){
             attacks |= (1ULL << (ranks*8+tragetFile));
-            if (block & (1ULL << (ranks*8+tragetFile))) break;
+            if (block & (1ULL << (ranks*8+tragetFile))) break;// Stop at blocker
 
         }
         for(ranks = tragetRank-1;ranks>=0;ranks--){
             attacks |= (1ULL << (ranks*8+tragetFile));
-            if (block & (1ULL << (ranks*8+tragetFile))) break;
+            if (block & (1ULL << (ranks*8+tragetFile))) break;// Stop at blocker
         }
         for(files = tragetFile+1;files<=7;files++){
             attacks |= (1ULL << (tragetRank*8+files));
-            if (block & (1ULL << (tragetRank*8+files))) break;
+            if (block & (1ULL << (tragetRank*8+files))) break;// Stop at blocker
         }
         for(files = tragetFile-1;files>=0;files--){
             attacks |= (1ULL << (tragetRank*8+files));
-            if (block & (1ULL << (tragetRank*8+files))) break;
+            if (block & (1ULL << (tragetRank*8+files))) break;// Stop at blocker
         }
         return attacks;
+    }
+    U64 queenAttacksOnTheFly(int square, U64 block) {
+        return RookAttacksOnTheFly(square, block) | BishopAttacksOnTheFly(square, block);
     }
 //Main driver function
 int main(){
@@ -263,5 +266,6 @@ int main(){
     setBit(block, g2);
     printBitBoard(BishopAttacksOnTheFly(d5, block));
     printBitBoard(RookAttacksOnTheFly(d5, block));
+    printBitBoard(queenAttacksOnTheFly(d5, block));
     return 0;
 }

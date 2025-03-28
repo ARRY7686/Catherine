@@ -290,18 +290,34 @@ U64 notABFile = 18229723555195321596ULL;
     U64 queenAttacksOnTheFly(int square, U64 block) {
         return RookAttacksOnTheFly(square, block) | BishopAttacksOnTheFly(square, block);
     }
+
+//setting occupancies by iterating over the bits in the mask,popping the bit from the attack mask and setting the occupancy to 1 if the bit is set in the index
+U64 setOccupancy(int index,int bitsInMask,U64 attackMask){
+    U64 occupancy = 0ULL;
+    for(int count = 0;count<bitsInMask;count++){
+        int square = getLeastSignificant1stBitIndex(attackMask);
+        popBit(attackMask,square);
+        if(index & (1<<count)){
+            setBit(occupancy,square);
+        }
+    }
+
+    return occupancy;
+}
 //Main driver function
 int main(){
     //testing the bitboard
     // printBitBoard(maskQueenAttacks(d5));
-    U64 block = 0ULL;
-    setBit(block, d4);
-    setBit(block, e5);
-    setBit(block, g2);
-    printBitBoard(block);
-    std::cout << squareToCoordinates[getLeastSignificant1stBitIndex(block)] << std::endl;
-    U64 test = 0ULL;
-    setBit(test, 28);
+    // U64 block = 0ULL;
+    // setBit(block, d4);
+    // setBit(block, e5);
+    // setBit(block, g2);
+    // printBitBoard(block);
+    // std::cout << squareToCoordinates[getLeastSignificant1stBitIndex(block)] << std::endl;
+    // U64 test = 0ULL;
+    // setBit(test, 28);
     // printBitBoard(test);
+    U64 occupancy = setOccupancy(4095,count_bits(maskQueenAttacks(d5)),maskQueenAttacks(d5));
+    printBitBoard(occupancy);
     return 0;
 }

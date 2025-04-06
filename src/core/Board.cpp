@@ -100,7 +100,7 @@ const int bishopRelevantBits[64] = {
     5,5,5,5,5,5,5,5,
     6,5,5,5,5,5,5,6
 
-}
+};
 
 const int rookRelevantBits[64] = {
     12,11,11,11,11,11,11,12,

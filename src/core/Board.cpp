@@ -331,6 +331,25 @@ U64 setOccupancy(int index,int bitsInMask,U64 attackMask){
 
     return occupancy;
 }
+
+//using XORWOW to generate random numbers(declaring 5 states  and using bit manipulation to generate random numbers also updating the state values)
+unsigned int xstate = 1789330918;
+unsigned int ystate = 3760899688;
+unsigned int zstate = 3671987436;
+unsigned int wstate = 703422639;
+unsigned int vstate = 1750193339;
+unsigned int dstate = 1336784410;
+unsigned int xorwow() {
+    unsigned int t = xstate ^ (xstate >> 2);
+    xstate = ystate;
+    ystate = zstate;
+    zstate = wstate;
+    wstate = vstate;
+    vstate = vstate ^ (vstate << 4) ^ (t ^ (t << 1));
+    dstate += 362437;
+    return ((vstate + dstate)&0xFFFFFFFF);
+}
+
 //Main driver function
 int main(){
     //testing the bitboard
@@ -344,7 +363,12 @@ int main(){
     // U64 test = 0ULL;
     // setBit(test, 28);
     // printBitBoard(test);
-    U64 occupancy = setOccupancy(4095,count_bits(maskQueenAttacks(d5)),maskQueenAttacks(d5));
-    printBitBoard(occupancy);
+    // U64 occupancy = setOccupancy(4095,count_bits(maskQueenAttacks(d5)),maskQueenAttacks(d5));
+    // printBitBoard(occupancy);
+
+    for(int i = 0; i < 10; i++) {
+        std::cout << xorwow() << std::endl;
+    }
+    
     return 0;
 }

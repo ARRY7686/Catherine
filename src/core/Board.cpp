@@ -77,6 +77,7 @@ void printBitBoard(U64 bitBoard){
     }
     //printing files
     std::cout<<std::endl<< "   "<<"a b c d e f g h"<<std::endl<<std::endl;
+    std::cout << "     Bitboard: " << bitBoard << "\n\n";
 
 }
 
@@ -350,6 +351,40 @@ unsigned int xorwow() {
     return ((vstate + dstate)&0xFFFFFFFF);
 }
 
+unsigned int randomU32() {
+    return xorwow();
+}
+U64 randomU64() {
+    U64 n1,n2,n3,n4;
+    n1 = (U64)(xorwow()&0xFFFFFFFF);
+    n2 = (U64)(xorwow()&0xFFFFFFFF);
+    n3 = (U64)(xorwow()&0xFFFFFFFF);
+    n4 = (U64)(xorwow()&0xFFFFFFFF);
+    return n1 | (n2 << 16) | (n3 << 32) | (n4 << 48);
+
+}
+
+void init_leapers_attacks()
+{
+    // loop over 64 board squares
+    for (int square = 0; square < 64; square++)
+    {
+        // init pawn attacks
+        pawnAttacks[WHITE][square] = maskPawnAttacks(WHITE, square);
+        pawnAttacks[BLACK][square] = maskPawnAttacks(BLACK, square);
+        
+        // init knight attacks
+        knightAttacks[square] = maskKnightAttacks(square);
+        
+        // init king attacks
+        kingAttacks[square] = maskKingAttacks(square);
+    }
+}
+//generating magic numbers
+U64 generateMagicNumber(){
+    return randomU64()&randomU64()&randomU64();
+}
+
 //Main driver function
 int main(){
     //testing the bitboard
@@ -366,9 +401,9 @@ int main(){
     // U64 occupancy = setOccupancy(4095,count_bits(maskQueenAttacks(d5)),maskQueenAttacks(d5));
     // printBitBoard(occupancy);
 
-    for(int i = 0; i < 10; i++) {
-        std::cout << xorwow() << std::endl;
-    }
+    printBitBoard(generateMagicNumber());
+
+    
     
     return 0;
 }

@@ -24,7 +24,7 @@ extern const char *squareToCoordinates[64];
 #define setBit(bitBoard,square) (bitBoard |= (1ULL << square))
 #define popBit(bitBoard,square) (getBit(bitBoard,square)? bitBoard ^= (1ULL << square) : 0)
 
-int count_bits(U64 bitBoard);
+int countBits(U64 bitBoard);
 int getLeastSignificant1stBitIndex(U64 bitBoard);
 void printBitBoard(U64 bitBoard);
 

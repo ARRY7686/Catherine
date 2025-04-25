@@ -16,7 +16,7 @@ U64 notHFile = 9187201950435737471ULL;
 U64 notHGFile = 4557430888798830399ULL;
 U64 notABFile = 18229723555195321596ULL;
 
-int count_bits(U64 bitBoard){
+int countBits(U64 bitBoard){
     int count = 0;
     while(bitBoard){
         bitBoard &= (bitBoard-1);
@@ -27,7 +27,7 @@ int count_bits(U64 bitBoard){
 
 int getLeastSignificant1stBitIndex(U64 bitBoard){
     if(bitBoard){
-        return count_bits((bitBoard & -bitBoard) - 1);
+        return countBits((bitBoard & -bitBoard) - 1);
     }
     else{
         return -1;

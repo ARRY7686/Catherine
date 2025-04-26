@@ -160,23 +160,17 @@ U64 findMagicNumber(int square,int relevantBits,int bishop){
     for(int random = 0;random<100000;random++){
         U64 magicNumber = generateMagicNumber();
         if(countBits((attackMask*magicNumber)&0xFF00000000000000)<6) continue;
-        //initializing the used attacks
         memset(usedAttacks,0,sizeof(usedAttacks));
         int index,fail;
         for(index = fail = 0;!fail&&index<occupancyIndices;index++){
-            //calculating the index for the current occupancy
             int magicIndex = (int)((occupancies[index] * magicNumber) >> (64-relevantBits));
-            //checking if the attack is already used
            if(usedAttacks[magicIndex] == 0ULL){
-                //if not used, set the attack
                 usedAttacks[magicIndex] = attacks[index];
             }else if(usedAttacks[magicIndex] != attacks[index]){
-                //if used and different, break the loop
                 fail = 1;
             }
         }
         if(!fail){
-            //if no fail, return the magic number
             return magicNumber;
         }
         
@@ -200,9 +194,7 @@ void initMagicNumbers(){
 
 void init_all()
 {
-    // init leaper pieces attacks
     init_leapers_attacks();
     
-    // init magic numbers
     initMagicNumbers();
 }

@@ -33,8 +33,17 @@ Catherine is a chess engine written in C++ that focuses on efficient bitboard-ba
 - **Occupancy Calculation**:
   - `setOccupancy` to generate occupancy bitboards based on attack masks.
 
-### Random Number Generation
-- A custom implementation of the XORWOW algorithm for generating random numbers, which can be used for Zobrist hashing in the future.
+## Magic Number Generation for Sliding Pieces
+- Implemented efficient magic number generation for rooks and bishops.
+- Used to speed up attack lookups by indexing precomputed attack tables via magic numbers.
+
+## Improved Random Number Generation
+- Added a custom XORWOW pseudo-random number generator.
+- Enhances randomness for bitboard occupancy generation and future Zobrist hashing needs.
+
+## Enhanced Attack Initialization
+- Optimized initialization of knight and king attack patterns (leaper attacks).
+- Improved dynamic attack generation for sliding pieces considering blockers.
 
 ### Debugging and Visualization
 - A `printBitBoard` function to visualize bitboards in a human-readable format.

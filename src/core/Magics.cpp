@@ -192,9 +192,10 @@ void initMagicNumbers(){
 
 //init all
 
-void init_all()
+void initAll()
 {
     init_leapers_attacks();
-    
-    initMagicNumbers();
+    initSliderAttacks(1);
+    initSliderAttacks(0);
+    // initMagicNumbers();
 }
